@@ -29,8 +29,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef _PRINTF_H_
-#define _PRINTF_H_
+#ifndef _WPRINTF_H_
+#define _WPRINTF_H_
 
 #include <stdarg.h>
 #include <stddef.h>
@@ -114,4 +114,4 @@ int fctwprintf(void (*out)(wchar_t character, void* arg), void* arg, const wchar
 #endif
 
 
-#endif  // _PRINTF_H_
+#endif  // _WPRINTF_H_
