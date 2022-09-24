@@ -168,7 +168,7 @@ static inline void _out_wfct(wchar_t character, void* buffer, size_t idx, size_t
 
 // internal secure strlen
 // \return The length of the string (excluding the terminating 0) limited by 'maxsize'
-static inline unsigned int _strnlen_s(const wchar_t* str, size_t maxsize)
+static inline unsigned int _wstrnlen_s(const wchar_t* str, size_t maxsize)
 {
   const wchar_t* s;
   for (s = str; *s && maxsize--; ++s);
@@ -794,8 +794,8 @@ static int _vsnprintf(out_wfct_type out, char* buffer, const size_t maxlen, cons
       }
 
       case 's' : {
-        const char* p = va_arg(va, char*);
-        unsigned int l = _strnlen_s(p, precision ? precision : (size_t)-1);
+        const wchar_t* p = va_arg(va, char*);
+        unsigned int l = _wstrnlen_s(p, precision ? precision : (size_t)-1);
         // pre padding
         if (flags & FLAGS_PRECISION) {
           l = (l < precision ? l : precision);
