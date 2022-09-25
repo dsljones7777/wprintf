@@ -83,9 +83,9 @@ int wsprintf_(wchar_t* buffer, const wchar_t* format, ...);
  *         is non-negative and less than count, the string has been completely written.
  */
 #define wsnprintf  wsnprintf_
-#define wvsnprintf wvsnprintf_
+#define wvsnprintf vsnwprintf_
 int  wsnprintf_(wchar_t* buffer, size_t count, const wchar_t* format, ...);
-int wvsnprintf_(wchar_t* buffer, size_t count, const wchar_t* format, va_list va);
+int vsnwprintf_(wchar_t* buffer, size_t count, const wchar_t* format, va_list va);
 
 
 /**
@@ -94,8 +94,8 @@ int wvsnprintf_(wchar_t* buffer, size_t count, const wchar_t* format, va_list va
  * \param va A value identifying a variable arguments list
  * \return The number of characters that are WRITTEN into the buffer, not counting the terminating null character
  */
-#define vwprintf vwprintf_
-int vwprintf_(const char* format, va_list va);
+#define vwprintf wvprintf_
+int wvprintf_(const wchar_t* format, va_list va);
 
 
 /**
