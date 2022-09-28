@@ -68,7 +68,7 @@ int wprintf_(const wchar_t* format, ...);
  * \param format A string that specifies the format of the output
  * \return The number of characters that are WRITTEN into the buffer, not counting the terminating null character
  */
-#define sprintf wsprintf_
+#define wsprintf wsprintf_
 int wsprintf_(wchar_t* buffer, const wchar_t* format, ...);
 
 

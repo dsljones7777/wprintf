@@ -133,7 +133,7 @@ typedef struct {
 static inline void _out_buffer(wchar_t character, void* buffer, size_t idx, size_t maxlen)
 {
   if (idx < maxlen) {
-    ((char*)buffer)[idx] = character;
+    ((wchar_t*)buffer)[idx] = character;
   }
 }
 
@@ -278,9 +278,9 @@ static size_t _ntoa_format(out_wfct_type out, wchar_t* buffer, size_t idx, size_
 
 
 // internal itoa for 'long' type
-static size_t _ntoa_long(out_wfct_type out, char* buffer, size_t idx, size_t maxlen, unsigned long value, bool negative, unsigned long base, unsigned int prec, unsigned int width, unsigned int flags)
+static size_t _ntoa_long(out_wfct_type out, wchar_t* buffer, size_t idx, size_t maxlen, unsigned long value, bool negative, unsigned long base, unsigned int prec, unsigned int width, unsigned int flags)
 {
-  char buf[PRINTF_NTOA_BUFFER_SIZE];
+  wchar_t buf[PRINTF_NTOA_BUFFER_SIZE];
   size_t len = 0U;
 
   // no hash for 0 values
@@ -291,7 +291,7 @@ static size_t _ntoa_long(out_wfct_type out, char* buffer, size_t idx, size_t max
   // write if precision != 0 and value is != 0
   if (!(flags & FLAGS_PRECISION) || value) {
     do {
-      const char digit = (char)(value % base);
+      const wchar_t digit = (wchar_t)(value % base);
       buf[len++] = digit < 10 ? '0' + digit : (flags & FLAGS_UPPERCASE ? 'A' : 'a') + digit - 10;
       value /= base;
     } while (value && (len < PRINTF_NTOA_BUFFER_SIZE));
@@ -303,9 +303,9 @@ static size_t _ntoa_long(out_wfct_type out, char* buffer, size_t idx, size_t max
 
 // internal itoa for 'long long' type
 #if defined(PRINTF_SUPPORT_LONG_LONG)
-static size_t _ntoa_long_long(out_wfct_type out, char* buffer, size_t idx, size_t maxlen, unsigned long long value, bool negative, unsigned long long base, unsigned int prec, unsigned int width, unsigned int flags)
+static size_t _ntoa_long_long(out_wfct_type out, wchar_t* buffer, size_t idx, size_t maxlen, unsigned long long value, bool negative, unsigned long long base, unsigned int prec, unsigned int width, unsigned int flags)
 {
-  char buf[PRINTF_NTOA_BUFFER_SIZE];
+  wchar_t buf[PRINTF_NTOA_BUFFER_SIZE];
   size_t len = 0U;
 
   // no hash for 0 values
@@ -574,7 +574,7 @@ static size_t _etoa(out_wfct_type out, wchar_t* buffer, size_t idx, size_t maxle
 
 
 // internal vsnprintf
-static int _vsnprintf(out_wfct_type out, char* buffer, const size_t maxlen, const wchar_t* format, va_list va)
+static int _vsnprintf(out_wfct_type out, wchar_t* buffer, const size_t maxlen, const wchar_t* format, va_list va)
 {
   unsigned int flags, width, precision, n;
   size_t idx = 0U;
@@ -794,7 +794,7 @@ static int _vsnprintf(out_wfct_type out, char* buffer, const size_t maxlen, cons
       }
 
       case 's' : {
-        const wchar_t* p = va_arg(va, char*);
+        const wchar_t* p = va_arg(va, wchar_t*);
         unsigned int l = _wstrnlen_s(p, precision ? precision : (size_t)-1);
         // pre padding
         if (flags & FLAGS_PRECISION) {
@@ -863,7 +863,7 @@ int wprintf_(const wchar_t* format, ...)
 {
   va_list va;
   va_start(va, format);
-  char buffer[1];
+  wchar_t buffer[1];
   const int ret = _vsnprintf(_out_char, buffer, (size_t)-1, format, va);
   va_end(va);
   return ret;
@@ -892,7 +892,7 @@ int wsnprintf_(wchar_t* buffer, size_t count, const wchar_t* format, ...)
 
 int wvprintf_(const wchar_t* format, va_list va)
 {
-  char buffer[1];
+  wchar_t buffer[1];
   return _vsnprintf(_out_char, buffer, (size_t)-1, format, va);
 }
 
@@ -908,7 +908,7 @@ int fctwprintf(void (*out)(wchar_t character, void* arg), void* arg, const wchar
   va_list va;
   va_start(va, format);
   const out_wfct_wrap_type out_fct_wrap = { out, arg };
-  const int ret = _vsnprintf(_out_wfct, (char*)(uintptr_t)&out_fct_wrap, (size_t)-1, format, va);
+  const int ret = _vsnprintf(_out_wfct, (wchar_t*)(uintptr_t)&out_fct_wrap, (size_t)-1, format, va);
   va_end(va);
   return ret;
 }
